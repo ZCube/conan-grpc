@@ -69,9 +69,11 @@ class grpcConan(ConanFile):
         tools.replace_in_file(gflags_cmake_path, "gflags::gflags", "CONAN_PKG::gflags")
 
         protobuf_cmake_path = os.path.join(self._source_subfolder, "third_party", "protobuf", "cmake")
+        tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
+            "project(protobuf C CXX)", "#project(protobuf C CXX)")
 
         for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
-            if tools.is_apple_os(os):
+            if tools.is_apple_os(self.settings.os):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION}",
                     "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
