@@ -24,6 +24,7 @@ class grpcConan(ConanFile):
         "build_codegen": [True, False],
         "build_csharp_ext": [True, False]
     }
+    
     default_options = {
         "shared": False,
         "fPIC": True,
@@ -41,13 +42,13 @@ class grpcConan(ConanFile):
         "abseil/20200225.2",
         "gflags/2.2.2",
     )
-
+    
     def configure(self):
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             del self.options.fPIC
 
-        if self.settings.os == "Macos" or self.settings.os == "iOS" or self.settings.os == "watchOS" or self.settings.os == "tvOS":
-            del self.options.shared
+        # if tools.is_apple_os(os):
+        #     del self.options.shared
 
     def source(self):
         git = tools.Git(folder=self._source_subfolder)
@@ -92,7 +93,10 @@ class grpcConan(ConanFile):
         cmake.definitions['gRPC_GFLAGS_PROVIDER'] = "package"
         cmake.definitions['gRPC_PROTOBUF_PROVIDER'] = "module"
 
-        cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
+        if not tools.is_apple_os(os):
+            cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
+            cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
+
         cmake.definitions['protobuf_INSTALL'] = "ON"
         cmake.definitions["protobuf_BUILD_TESTS"] = "OFF"
         cmake.definitions["protobuf_WITH_ZLIB"] = "ON"
