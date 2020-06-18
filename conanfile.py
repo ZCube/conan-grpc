@@ -67,7 +67,14 @@ class grpcConan(ConanFile):
         tools.replace_in_file(cares_cmake_path, "c-ares::cares", "CONAN_PKG::c-ares")
         tools.replace_in_file(gflags_cmake_path, "gflags::gflags", "CONAN_PKG::gflags")
 
-        tools.replace_in_file("{}/third_party/protobuf/cmake/install.cmake".format(self._source_subfolder),
+        protobuf_cmake_path = os.path.join(self._source_subfolder, "third_party", "protobuf", "cmake")
+
+        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
+            tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                "VERSION ${protobuf_VERSION}",
+                "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+
+        tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
             '''set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/protobuf" CACHE STRING "${_cmakedir_desc}")''')
 
