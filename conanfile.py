@@ -72,7 +72,7 @@ class grpcConan(ConanFile):
         tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
             "project(protobuf C CXX)", "#project(protobuf C CXX)")
 
-        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
+        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake"]:
             if tools.is_apple_os(self.settings.os):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION}",
@@ -81,6 +81,16 @@ class grpcConan(ConanFile):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION}",
                     "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+
+        for cmake_file in ["protoc.cmake"]:
+            if tools.is_apple_os(self.settings.os):
+                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                    "VERSION ${protobuf_VERSION})",
+                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+            else:
+                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                    "VERSION ${protobuf_VERSION})",
+                    "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION})")
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
