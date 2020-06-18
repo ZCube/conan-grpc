@@ -72,6 +72,12 @@ class grpcConan(ConanFile):
         tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
             "project(protobuf C CXX)", "#project(protobuf C CXX)")
 
+        tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
+            "${protobuf_SOURCE_DIR}", "${CMAKE_CURRENT_SOURCE_DIR}")
+
+        tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
+            "${protobuf_BINARY_DIR}", "${CMAKE_CURRENT_BINARY_DIR}")
+
         for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake"]:
             if tools.is_apple_os(self.settings.os):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
@@ -86,7 +92,7 @@ class grpcConan(ConanFile):
             if tools.is_apple_os(self.settings.os):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION})",
-                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION})")
             else:
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION})",
