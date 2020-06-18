@@ -46,10 +46,7 @@ class grpcConan(ConanFile):
     def configure(self):
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             del self.options.fPIC
-
-        # if tools.is_apple_os(os):
-        #     del self.options.shared
-
+            
     def source(self):
         git = tools.Git(folder=self._source_subfolder)
         git.clone("https://github.com/grpc/grpc.git", "v1.29.1")
@@ -93,9 +90,18 @@ class grpcConan(ConanFile):
         cmake.definitions['gRPC_GFLAGS_PROVIDER'] = "package"
         cmake.definitions['gRPC_PROTOBUF_PROVIDER'] = "module"
 
-        if not tools.is_apple_os(os):
-            cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
-            cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
+        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
+            if tools.is_apple_os(os):
+                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                    "VERSION ${protobuf_VERSION}",
+                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+            else:
+                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                    "VERSION ${protobuf_VERSION}",
+                    "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+
+        cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
+        cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
 
         cmake.definitions['protobuf_INSTALL'] = "ON"
         cmake.definitions["protobuf_BUILD_TESTS"] = "OFF"
