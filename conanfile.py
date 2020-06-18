@@ -70,6 +70,16 @@ class grpcConan(ConanFile):
 
         protobuf_cmake_path = os.path.join(self._source_subfolder, "third_party", "protobuf", "cmake")
 
+        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
+            if tools.is_apple_os(os):
+                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                    "VERSION ${protobuf_VERSION}",
+                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+            else:
+                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                    "VERSION ${protobuf_VERSION}",
+                    "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
+
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
             '''set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/protobuf" CACHE STRING "${_cmakedir_desc}")''')
@@ -89,16 +99,6 @@ class grpcConan(ConanFile):
         cmake.definitions['gRPC_SSL_PROVIDER'] = "package"
         cmake.definitions['gRPC_GFLAGS_PROVIDER'] = "package"
         cmake.definitions['gRPC_PROTOBUF_PROVIDER'] = "module"
-
-        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
-            if tools.is_apple_os(os):
-                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
-                    "VERSION ${protobuf_VERSION}",
-                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
-            else:
-                tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
-                    "VERSION ${protobuf_VERSION}",
-                    "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
 
         cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
         cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
