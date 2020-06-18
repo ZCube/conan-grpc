@@ -55,9 +55,18 @@ The following command both runs all the steps of the conan file, and publishes t
     $ conan remote add zcube "https://api.bintray.com/conan/zcube/conan-public"
 
 
+## Using protoc
+
+```
+conan install grpc/1.29.1@zcube/stable -g virtualrunenv
+activate_run.bat
+protoc
+```
+
+
 ## Conan Recipe License
 
-NOTE: The conan recipe license applies only to the files of this recipe, which can be used to build and package libjpeg.
+NOTE: The conan recipe license applies only to the files of this recipe, which can be used to build and package grpc and protobuf.
 It does *not* in any way apply or is related to the actual software being packaged.
 
 [MIT](https://github.com/zcube/conan-zcube/blob/stable/1.29.1/LICENSE.md)
