@@ -12,7 +12,7 @@ class grpcConan(ConanFile):
     url = "https://github.com/zcube/conan-grpc"
     homepage = "https://github.com/grpc/grpc"
     license = "Apache-2.0"
-    author = "zcube <zcube.kr>"
+    author = "zcube <zcube@zcube.kr>"
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake", "cmake_find_package_multi"
     short_paths = True
