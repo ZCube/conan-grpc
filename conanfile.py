@@ -46,7 +46,7 @@ class grpcConan(ConanFile):
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             del self.options.fPIC
 
-        if self.settings.os == "Macos" of self.settings.os == "iOS" or self.settings.os == "watchOS" or self.settings.os == "tvOS":
+        if self.settings.os == "Macos" or self.settings.os == "iOS" or self.settings.os == "watchOS" or self.settings.os == "tvOS":
             del self.options.shared
 
     def source(self):
