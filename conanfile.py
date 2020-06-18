@@ -74,6 +74,10 @@ class grpcConan(ConanFile):
                 "VERSION ${protobuf_VERSION}",
                 "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
 
+        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake"]:
+            tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
+                "OUTPUT_NAME", "#OUTPUT_NAME")
+
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
             '''set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/protobuf" CACHE STRING "${_cmakedir_desc}")''')
