@@ -92,11 +92,13 @@ class grpcConan(ConanFile):
             if tools.is_apple_os(self.settings.os):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION})",
-                    "#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION})")
+                    '''#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}
+)''')
             else:
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION})",
-                    "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION})")
+                    '''VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}
+)''')
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
