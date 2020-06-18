@@ -8,7 +8,7 @@ class grpcConan(ConanFile):
     name = "grpc"
     version = "1.29.1"
     description = "gRPC framework with protobuf"
-    topics = ("conan", "grpc", "rpc")
+    topics = ("conan", "grpc", "rpc", "protobuf")
     url = "https://github.com/zcube/conan-grpc"
     homepage = "https://github.com/grpc/grpc"
     license = "Apache-2.0"
