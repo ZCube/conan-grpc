@@ -46,6 +46,9 @@ class grpcConan(ConanFile):
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
             del self.options.fPIC
 
+        if self.settings.os == "Macos" of self.settings.os == "iOS" or self.settings.os == "watchOS" or self.settings.os == "tvOS":
+            del self.options.shared
+
     def source(self):
         git = tools.Git(folder=self._source_subfolder)
         git.clone("https://github.com/grpc/grpc.git", "v1.29.1")
@@ -68,15 +71,6 @@ class grpcConan(ConanFile):
         tools.replace_in_file(gflags_cmake_path, "gflags::gflags", "CONAN_PKG::gflags")
 
         protobuf_cmake_path = os.path.join(self._source_subfolder, "third_party", "protobuf", "cmake")
-
-        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake", "protoc.cmake"]:
-            tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
-                "VERSION ${protobuf_VERSION}",
-                "VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}")
-
-        for cmake_file in ["libprotobuf-lite.cmake", "libprotobuf.cmake", "libprotoc.cmake"]:
-            tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
-                "OUTPUT_NAME", "#OUTPUT_NAME")
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
