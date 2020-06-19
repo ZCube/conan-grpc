@@ -78,5 +78,10 @@ install:
   - pip install conan_package_tools bincrafters_package_tools
   - conan user # It creates the conan data directory
 
+before_build:
+  # cmake
+  - choco upgrade cmake
+  - set path=C:\Program Files\CMake\bin;%path%
+
 build_script:
   - python build.py
