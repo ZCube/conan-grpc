@@ -93,12 +93,12 @@ class grpcConan(ConanFile):
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION})",
                     '''#VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}
-)''')
+DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")''')
             else:
                 tools.replace_in_file("{}/{}".format(protobuf_cmake_path, cmake_file),
                     "VERSION ${protobuf_VERSION})",
                     '''VERSION ${protobuf_VERSION} SOVERSION ${protobuf_VERSION}
-)''')
+DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")''')
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
