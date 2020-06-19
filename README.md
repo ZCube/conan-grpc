@@ -75,6 +75,6 @@ It does *not* in any way apply or is related to the actual software being packag
 
 ## References
 
-https://github.com/zcube/conan-grpc
+https://github.com/inexorgame/conan-grpc
 
 https://github.com/0x8000-0000/conan-recipes/tree/master/recipes/grpc
