@@ -57,6 +57,10 @@ class grpcConan(ConanFile):
         cares_cmake_path = os.path.join(self._source_subfolder, "cmake", "cares.cmake")
         gflags_cmake_path = os.path.join(self._source_subfolder, "cmake", "gflags.cmake")
 
+        tools.replace_in_file(cmake_path, "target_include_directories(check_epollexclusive",
+            '''set_source_files_properties(test/build/check_epollexclusive.c PROPERTIES LANGUAGE CXX)
+            target_include_directories(check_epollexclusive''')
+
         tools.replace_in_file(cmake_path, "absl::time", "CONAN_PKG::abseil")
         tools.replace_in_file(cmake_path, "absl::strings", "CONAN_PKG::abseil")
         tools.replace_in_file(cmake_path, "absl::str_format", "CONAN_PKG::abseil")
