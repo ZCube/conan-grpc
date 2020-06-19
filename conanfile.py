@@ -57,7 +57,7 @@ class grpcConan(ConanFile):
 
         tools.replace_in_file(cmake_path, "target_include_directories(check_epollexclusive",
             '''set_source_files_properties(test/build/check_epollexclusive.c PROPERTIES LANGUAGE CXX)
-            target_include_directories(check_epollexclusive''')
+target_include_directories(check_epollexclusive''')
 
         tools.replace_in_file(cmake_path, "absl::time", "CONAN_PKG::abseil")
         tools.replace_in_file(cmake_path, "absl::strings", "CONAN_PKG::abseil")
@@ -71,6 +71,7 @@ class grpcConan(ConanFile):
         tools.replace_in_file(gflags_cmake_path, "gflags::gflags", "CONAN_PKG::gflags")
 
         protobuf_cmake_path = os.path.join(self._source_subfolder, "third_party", "protobuf", "cmake")
+        protobuf_config_cmake_path = os.path.join(protobuf_cmake_path, "protobuf-config.cmake.in")
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
@@ -78,6 +79,12 @@ class grpcConan(ConanFile):
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             "CMAKE_INSTALL_CMAKEDIR", "PROTOBUF_CMAKE_INSTALL_CMAKEDIR")
+
+        # until grpc 1.30
+        if Version(self.version) < "1.30.0":
+            tools.replace_in_file(protobuf_config_cmake_path,
+                "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} ${_protobuf_include_path} ${_abs_file}",
+                "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} ${_GRPC_PLUGIN} ${_protobuf_include_path} ${_abs_file}")
 
     def _configure_cmake(self):
         cmake = CMake(self)
