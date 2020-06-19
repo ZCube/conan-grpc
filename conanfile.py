@@ -19,14 +19,12 @@ class grpcConan(ConanFile):
 
     settings = "os", "arch", "compiler", "build_type"
     options = {
-        "shared": [True, False],
         "fPIC": [True, False],
         "build_codegen": [True, False],
         "build_csharp_ext": [True, False]
     }
     
     default_options = {
-        "shared": False,
         "fPIC": True,
         "build_codegen": True,
         "build_csharp_ext": False
@@ -124,8 +122,8 @@ DEBUG_POSTFIX "${protobuf_DEBUG_POSTFIX}")''')
         cmake.definitions['gRPC_GFLAGS_PROVIDER'] = "package"
         cmake.definitions['gRPC_PROTOBUF_PROVIDER'] = "module"
 
-        cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
-        cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "ON" if self.options.shared else "OFF"
+        cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "OFF"
+        cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "OFF"
 
         cmake.definitions['protobuf_INSTALL'] = "ON"
         cmake.definitions["protobuf_BUILD_TESTS"] = "OFF"
