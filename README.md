@@ -1,3 +1,6 @@
+[![Download](https://api.bintray.com/packages/zcube/conan-public/grpc%3Azcube/images/download.svg) ](https://bintray.com/zcube/conan-public/grpc%3Azcube/_latestVersion)
+[![Build Status Travis](https://travis-ci.org/zcube/conan-grpc.svg)](https://travis-ci.org/zcube/conan-grpc)
+[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/zcube/conan-grpc?svg=true)](https://ci.appveyor.com/project/zcube/conan-grpc)
 # conan-grpc
 Conan package for gRPC framework with protobuf.
 
@@ -73,6 +76,6 @@ It does *not* in any way apply or is related to the actual software being packag
 
 ## References
 
-https://github.com/inexorgame/conan-grpc
+https://github.com/zcube/conan-grpc
 
 https://github.com/0x8000-0000/conan-recipes/tree/master/recipes/grpc
