@@ -6,7 +6,7 @@ import os
 
 class grpcConan(ConanFile):
     name = "grpc"
-    version = "1.29.1"
+    version = "1.30.0"
     description = "gRPC framework with protobuf"
     topics = ("conan", "grpc", "rpc", "protobuf")
     url = "https://github.com/zcube/conan-grpc"
@@ -47,7 +47,7 @@ class grpcConan(ConanFile):
             
     def source(self):
         git = tools.Git(folder=self._source_subfolder)
-        git.clone("https://github.com/grpc/grpc.git", "v1.29.1")
+        git.clone("https://github.com/grpc/grpc.git", "v1.30.0-pre1")
         self.run("cd {} && git submodule init && git submodule update third_party/protobuf".format(self._source_subfolder))
 
         cmake_path = os.path.join(self._source_subfolder, "CMakeLists.txt")
@@ -80,11 +80,8 @@ target_include_directories(check_epollexclusive''')
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             "CMAKE_INSTALL_CMAKEDIR", "PROTOBUF_CMAKE_INSTALL_CMAKEDIR")
 
-        # until grpc 1.30
-        if Version(self.version) < "1.30.0":
-            tools.replace_in_file(protobuf_config_cmake_path,
-                "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} ${_protobuf_include_path} ${_abs_file}",
-                "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} ${_GRPC_PLUGIN} ${_protobuf_include_path} ${_abs_file}")
+        tools.replace_in_file(protobuf_config_cmake_path,
+            '''"^\\.\\.[/\\\\].*"''', '''"^[.][.][/\\\\].*"''')
 
     def _configure_cmake(self):
         cmake = CMake(self)

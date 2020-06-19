@@ -26,5 +26,4 @@ add_executable(greeter_client_server greeter_client_server.cc helloworld.proto)
 target_link_libraries(greeter_client_server gRPC::grpc++_reflection gRPC::grpc++ protobuf::libprotobuf)
 
 protobuf_generate(TARGET greeter_client_server LANGUAGE cpp)
-set(_GRPC_PLUGIN "--plugin=protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
-protobuf_generate(TARGET greeter_client_server LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc)
+protobuf_generate(TARGET greeter_client_server LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc PLUGIN "protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
