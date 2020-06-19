@@ -1,6 +1,6 @@
 [![Download](https://api.bintray.com/packages/zcube/conan-public/grpc%3Azcube/images/download.svg) ](https://bintray.com/zcube/conan-public/grpc%3Azcube/_latestVersion)
-[![Build Status Travis](https://travis-ci.org/zcube/conan-grpc.svg)](https://travis-ci.org/zcube/conan-grpc)
-[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/zcube/conan-grpc?svg=true)](https://ci.appveyor.com/project/zcube/conan-grpc)
+[![Build Status Travis](https://travis-ci.org/ZCube/conan-grpc.svg?branch=stable%2F1.29.1)](https://travis-ci.org/zcube/conan-grpc)
+[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/jswwtxibxwtr1k0f/branch/stable/1.29.1?svg=true)](https://ci.appveyor.com/project/zcube/conan-grpc)
 # conan-grpc
 Conan package for gRPC framework with protobuf.
 
