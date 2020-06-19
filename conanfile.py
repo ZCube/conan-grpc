@@ -76,6 +76,9 @@ class grpcConan(ConanFile):
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
             '''set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/protobuf" CACHE STRING "${_cmakedir_desc}")''')
 
+        tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
+            "CMAKE_INSTALL_CMAKEDIR", "PROTOBUF_CMAKE_INSTALL_CMAKEDIR")
+
     def _configure_cmake(self):
         cmake = CMake(self)
 
@@ -91,6 +94,7 @@ class grpcConan(ConanFile):
         cmake.definitions['gRPC_SSL_PROVIDER'] = "package"
         cmake.definitions['gRPC_GFLAGS_PROVIDER'] = "package"
         cmake.definitions['gRPC_PROTOBUF_PROVIDER'] = "module"
+        cmake.definitions['gRPC_INSTALL_CMAKEDIR'] = "lib/cmake/gRPC"
 
         cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "OFF"
         cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "OFF"
