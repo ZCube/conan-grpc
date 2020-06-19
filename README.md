@@ -47,7 +47,6 @@ The following command both runs all the steps of the conan file, and publishes t
 ### Available Options
 | Option        | Default | Possible Values  |
 | ------------- |:----------------- |:------------:|
-| shared      | False |  [True, False] |
 | fPIC      | True |  [True, False] |
 | build_codegen      | True |  [True, False] |
 | build_csharp_ext      | False |  [True, False] |
