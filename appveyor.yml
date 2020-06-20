@@ -90,3 +90,6 @@ build_script:
   - cmake --version
   - where cmake
   - python build.py
+  
+cache:
+  #- packages
