@@ -80,6 +80,8 @@ install:
 
 before_build:
   # cmake
+  - mkdir "C:\Program Files (x86)\CMake\bin"
+  - rmdir /S /Q "C:\Program Files (x86)\CMake\bin"
   - choco upgrade cmake
   - set path=C:\Program Files\CMake\bin;%path%
   - echo %path%
