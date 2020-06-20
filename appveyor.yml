@@ -1,5 +1,7 @@
+
 environment:
   PYTHON_HOME: "C:\\Python37"
+  CONAN_CMAKE_PROGRAM: '"C:\Program Files\CMake\bin\cmake.exe"'
 
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
@@ -80,6 +82,8 @@ install:
 
 before_build:
   # cmake
+  - mkdir "C:\Program Files (x86)\CMake\bin\temp"
+  - rmdir /S /Q "C:\Program Files (x86)\CMake"
   - choco upgrade cmake
   - set path=C:\Program Files\CMake\bin;%path%
   - echo %path%

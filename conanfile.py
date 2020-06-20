@@ -113,6 +113,28 @@ target_include_directories(check_epollexclusive''')
             cmake.definitions["protobuf_MSVC_STATIC_RUNTIME"] = "MT" in self.settings.compiler.runtime
             cmake.definitions["gRPC_MSVC_STATIC_RUNTIME"] = "MT" in self.settings.compiler.runtime
 
+        grpcconfig_cmake_path = os.path.join(self._source_subfolder, "cmake", "gRPCConfig.cmake.in")
+        tools.save(grpcconfig_cmake_path, '''
+function(grpc_generate)
+include(CMakeParseArguments)
+set(_options APPEND_PATH)
+set(_singleargs LANGUAGE OUT_VAR EXPORT_MACRO PROTOC_OUT_DIR)
+if(COMMAND target_sources)
+  list(APPEND _singleargs TARGET)
+endif()
+set(_multiargs PROTOS IMPORT_DIRS GENERATE_EXTENSIONS)
+cmake_parse_arguments(grpc_generate "${_options}" "${_singleargs}" "${_multiargs}" "${ARGN}")
+if(NOT grpc_generate_TARGET)
+message(SEND_ERROR "Error: grpc_generate called without any targets or source files")
+return()
+endif()
+find_program(_GRPC_CPP_PLUGIN NAMES grpc_cpp_plugin)
+mark_as_advanced(_GRPC_CPP_PLUGIN)
+protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE cpp)
+protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc PLUGIN "protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
+endfunction(grpc_generate)
+''', append = True)
+
         cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
