@@ -82,6 +82,14 @@ before_build:
   # cmake
   - choco upgrade cmake
   - set path=C:\Program Files\CMake\bin;%path%
-  
+  - echo %path%
+  - cmake --version
+  - where cmake
+
 build_script:
+  - cmake --version
+  - where cmake
   - python build.py
+  
+cache:
+  #- packages
