@@ -1,5 +1,7 @@
+
 environment:
   PYTHON_HOME: "C:\\Python37"
+  CONAN_CMAKE_PROGRAM: '"C:\Program Files\CMake\bin\cmake.exe"'
 
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
