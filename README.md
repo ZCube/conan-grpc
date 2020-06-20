@@ -36,6 +36,26 @@ Complete the installation of requirements for your project running:
 
 Note: It is recommended that you run conan install from a build directory and not the root of the project directory.  This is because conan generates *conanbuildinfo* files specific to a single build configuration which by default comes from an autodetected default profile located in ~/.conan/profiles/default .  If you pass different build configuration options to conan install, it will generate different *conanbuildinfo* files.  Thus, they should not be added to the root of the project, nor committed to git.
 
+#### CMake Setup Example
+
+```
+set(CMAKE_CXX_STANDARD 11)
+
+# conan setup
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+conan_set_find_paths()
+include_directories(${CMAKE_BINARY_DIR})
+
+# find packages
+find_package(protobuf CONFIG REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
+
+# project setting
+add_executable(greeter_client_server greeter_client_server.cc helloworld.proto)
+target_link_libraries(greeter_client_server gRPC::grpc++_reflection gRPC::grpc++ protobuf::libprotobuf)
+grpc_generate(TARGET greeter_client_server)
+```
 
 ## Build and package
 

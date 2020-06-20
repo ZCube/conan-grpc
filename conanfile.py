@@ -80,6 +80,35 @@ target_include_directories(check_epollexclusive''')
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             "CMAKE_INSTALL_CMAKEDIR", "PROTOBUF_CMAKE_INSTALL_CMAKEDIR")
 
+        grpcconfig_cmake_path = os.path.join(self._source_subfolder, "cmake", "gRPCConfig.cmake.in")
+        tools.save(grpcconfig_cmake_path, '''
+function(grpc_generate)
+include(CMakeParseArguments)
+
+set(_options APPEND_PATH)
+set(_singleargs LANGUAGE OUT_VAR EXPORT_MACRO PROTOC_OUT_DIR)
+if(COMMAND target_sources)
+  list(APPEND _singleargs TARGET)
+endif()
+set(_multiargs PROTOS IMPORT_DIRS GENERATE_EXTENSIONS)
+
+cmake_parse_arguments(grpc_generate "${_options}" "${_singleargs}" "${_multiargs}" "${ARGN}")
+
+if(NOT grpc_generate_TARGET)
+message(SEND_ERROR "Error: grpc_generate called without any targets or source files")
+return()
+endif()
+
+find_program(_GRPC_CPP_PLUGIN NAMES grpc_cpp_plugin)
+mark_as_advanced(_GRPC_CPP_PLUGIN)
+
+protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE cpp)
+set(_GRPC_PLUGIN "--plugin=protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
+protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc)
+
+endfunction(grpc_generate)
+''', append = True)
+
         # until grpc 1.30
         if Version(self.version) < "1.30.0":
             tools.replace_in_file(protobuf_config_cmake_path,
