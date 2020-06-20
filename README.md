@@ -44,7 +44,6 @@ set(CMAKE_CXX_STANDARD 11)
 # conan setup
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
-conan_set_find_paths()
 include_directories(${CMAKE_BINARY_DIR})
 
 # find packages

@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
-conan_set_find_paths()
 
 find_package(protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
