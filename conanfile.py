@@ -74,6 +74,9 @@ target_include_directories(check_epollexclusive''')
         protobuf_config_cmake_path = os.path.join(protobuf_cmake_path, "protobuf-config.cmake.in")
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
+            "set(LIB_PREFIX lib)", "set(LIB_PREFIX)")
+
+        tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
             '''set(CMAKE_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/protobuf" CACHE STRING "${_cmakedir_desc}")''')
 
@@ -136,7 +139,6 @@ endfunction(grpc_generate)
         cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "OFF"
 
         cmake.definitions['protobuf_DEBUG_POSTFIX'] = ""
-        cmake.definitions["LIB_PREFIX"] = ""
 
         cmake.definitions['protobuf_INSTALL'] = "ON"
         cmake.definitions["protobuf_BUILD_TESTS"] = "OFF"
