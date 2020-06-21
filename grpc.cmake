@@ -1,7 +1,7 @@
-find_program(_PROTOBUF_PROTOC NAMES protoc)
+find_program(_PROTOBUF_PROTOC NAMES protoc HINTS ${CONAN_BIN_DIRS_GRPC_RELEASE} ${CONAN_BIN_DIRS_GRPC_DEBUG} ${CONAN_BIN_DIRS_GRPC})
 mark_as_advanced(_PROTOBUF_PROTOC)
 
-find_program(_GRPC_CPP_PLUGIN NAMES grpc_cpp_plugin)
+find_program(_GRPC_CPP_PLUGIN NAMES grpc_cpp_plugin HINTS ${CONAN_BIN_DIRS_GRPC_RELEASE} ${CONAN_BIN_DIRS_GRPC_DEBUG} ${CONAN_BIN_DIRS_GRPC})
 mark_as_advanced(_GRPC_CPP_PLUGIN)
 
 function(grpc_generate)
@@ -21,9 +21,9 @@ message(SEND_ERROR "Error: grpc_generate called without any targets or source fi
 return()
 endif()
 
-protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE cpp)
+protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE cpp APPEND_PATH)
 set(_GRPC_PLUGIN "--plugin=protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
-protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc)
+protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc APPEND_PATH)
 
 endfunction(grpc_generate)
 
@@ -108,6 +108,16 @@ function(protobuf_generate)
         list(APPEND _protobuf_include_path -I ${ABS_PATH})
     endif()
   endforeach()
+
+  if(CONAN_INCLUDE_DIRS_GRPC_RELEASE)
+    list(APPEND _protobuf_include_path -I ${CONAN_INCLUDE_DIRS_GRPC_RELEASE})
+  endif(CONAN_INCLUDE_DIRS_GRPC_RELEASE)
+  if(CONAN_INCLUDE_DIRS_GRPC_DEBUG)
+    list(APPEND _protobuf_include_path -I ${CONAN_INCLUDE_DIRS_GRPC_DEBUG})
+  endif(CONAN_INCLUDE_DIRS_GRPC_DEBUG)
+  if(CONAN_INCLUDE_DIRS_GRPC)
+    list(APPEND _protobuf_include_path -I ${CONAN_INCLUDE_DIRS_GRPC} )
+  endif(CONAN_INCLUDE_DIRS_GRPC)
 
   set(_generated_srcs_all)
   foreach(_proto ${protobuf_generate_PROTOS})

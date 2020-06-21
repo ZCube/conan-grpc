@@ -49,6 +49,7 @@ class grpcConan(ConanFile):
         git = tools.Git(folder=self._source_subfolder)
         git.clone("https://github.com/grpc/grpc.git", "v1.29.1")
         self.run("cd {} && git submodule init && git submodule update third_party/protobuf".format(self._source_subfolder))
+        self.run("cd {} && git submodule init && git submodule update third_party/googleapis".format(self._source_subfolder))
 
         cmake_path = os.path.join(self._source_subfolder, "CMakeLists.txt")
         ssl_cmake_path = os.path.join(self._source_subfolder, "cmake", "ssl.cmake")
@@ -163,6 +164,7 @@ endfunction(grpc_generate)
 
         self.copy(pattern="LICENSE", dst="licenses")
         self.copy('grpc.cmake', dst='cmake')
+        self.copy('*', dst='include', src='{}/third_party/googleapis'.format(self._source_subfolder), keep_path=True)
         self.copy('*', dst='include', src='{}/include'.format(self._source_subfolder))
         self.copy('*.cmake', dst='lib', src='{}/lib'.format(self._build_subfolder), keep_path=True)
         self.copy("*.lib", dst="lib", src="", keep_path=False)
