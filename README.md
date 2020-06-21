@@ -56,6 +56,11 @@ target_link_libraries(greeter_client_server gRPC::grpc++_reflection gRPC::grpc++
 grpc_generate(TARGET greeter_client_server)
 ```
 
+#### CMake project example
+
+https://github.com/ZCube/grpc-cmake-example
+
+
 ## Build and package
 
 The following command both runs all the steps of the conan file, and publishes the package to the local system cache.  This includes downloading dependencies from "build_requires" and "requires" , and then running the build() method.
