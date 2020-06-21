@@ -13,7 +13,7 @@ class grpcConan(ConanFile):
     homepage = "https://github.com/grpc/grpc"
     license = "Apache-2.0"
     author = "zcube <zcube@zcube.kr>"
-    exports_sources = ["CMakeLists.txt"]
+    exports_sources = ["CMakeLists.txt", "grpc.cmake"]
     generators = "cmake", "cmake_find_package_multi"
     short_paths = True
 
@@ -73,7 +73,7 @@ target_include_directories(check_epollexclusive''')
         protobuf_cmake_path = os.path.join(self._source_subfolder, "third_party", "protobuf", "cmake")
         protobuf_config_cmake_path = os.path.join(protobuf_cmake_path, "protobuf-config.cmake.in")
 
-        tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
+        tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
             "set(LIB_PREFIX lib)", "set(LIB_PREFIX)")
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
@@ -162,6 +162,7 @@ endfunction(grpc_generate)
         cmake.install()
 
         self.copy(pattern="LICENSE", dst="licenses")
+        self.copy('grpc.cmake', dst='cmake')
         self.copy('*', dst='include', src='{}/include'.format(self._source_subfolder))
         self.copy('*.cmake', dst='lib', src='{}/lib'.format(self._build_subfolder), keep_path=True)
         self.copy("*.lib", dst="lib", src="", keep_path=False)
