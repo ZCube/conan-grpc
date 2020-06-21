@@ -19,5 +19,5 @@ message(STATUS "Using gRPC ${protobuf_VERSION}")
 include_directories(${CMAKE_BINARY_DIR})
 
 add_executable(greeter_client_server greeter_client_server.cc helloworld.proto)
-target_link_libraries(greeter_client_server gRPC::grpc++_reflection gRPC::grpc++ protobuf::libprotobuf)
+target_link_libraries(greeter_client_server CONAN_PKG::grpc)
 grpc_generate(TARGET greeter_client_server)

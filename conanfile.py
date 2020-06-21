@@ -103,7 +103,7 @@ find_program(_GRPC_CPP_PLUGIN NAMES grpc_cpp_plugin)
 mark_as_advanced(_GRPC_CPP_PLUGIN)
 
 protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE cpp)
-set(_GRPC_PLUGIN "--plugin=protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
+set(_GRPC_PLUGIN "protoc-gen-grpc=${_GRPC_CPP_PLUGIN}")
 protobuf_generate(TARGET ${grpc_generate_TARGET} LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc)
 
 endfunction(grpc_generate)
@@ -113,7 +113,7 @@ endfunction(grpc_generate)
         if Version(self.version) < "1.30.0":
             tools.replace_in_file(protobuf_config_cmake_path,
                 "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} ${_protobuf_include_path} ${_abs_file}",
-                "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} ${_GRPC_PLUGIN} ${_protobuf_include_path} ${_abs_file}")
+                "ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${protobuf_generate_PROTOC_OUT_DIR} --plugin=${_GRPC_PLUGIN} ${_protobuf_include_path} ${_abs_file}")
 
     def _configure_cmake(self):
         cmake = CMake(self)
@@ -135,6 +135,7 @@ endfunction(grpc_generate)
         cmake.definitions['protobuf_BUILD_SHARED_LIBS'] = "OFF"
         cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "OFF"
 
+        cmake.definitions['protobuf_DEBUG_POSTFIX'] = ""
         cmake.definitions['protobuf_INSTALL'] = "ON"
         cmake.definitions["protobuf_BUILD_TESTS"] = "OFF"
         cmake.definitions["protobuf_WITH_ZLIB"] = "ON"
@@ -167,11 +168,32 @@ endfunction(grpc_generate)
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.libs = [
+            "grpc++_alts",
+            "grpc++_unsecure",
+            "grpc++_reflection",
+            "grpc++_error_details",
+            "grpc++",
+            "grpc_unsecure",
+        ]
+        if self.options.build_codegen:
+            self.cpp_info.libs += [
+                "grpc_plugin_support",
+            ]
+        self.cpp_info.libs += [
+            "grpcpp_channelz",
+            "grpc",
+            "gpr",
+            "address_sorting",
+            "upb",
+            "protobuf-lite",
+            "protobuf",
+        ]
+        if self.options.build_codegen:
+            self.cpp_info.libs += [
+                "protoc",
+            ]
 
         bindir = os.path.join(self.package_folder, "bin")
         self.output.info("Appending PATH environment variable: {}".format(bindir))
         self.env_info.PATH.append(bindir)
-
-        protoc = "protoc.exe" if self.settings.os == "Windows" else "protoc"
-        self.env_info.PROTOC_BIN = os.path.normpath(os.path.join(self.package_folder, "bin", protoc))
