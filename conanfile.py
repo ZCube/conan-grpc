@@ -136,12 +136,14 @@ endfunction(grpc_generate)
         cmake.definitions['gRPC_BUILD_SHARED_LIBS'] = "OFF"
 
         cmake.definitions['protobuf_DEBUG_POSTFIX'] = ""
+        cmake.definitions["LIB_PREFIX"] = ""
+
         cmake.definitions['protobuf_INSTALL'] = "ON"
         cmake.definitions["protobuf_BUILD_TESTS"] = "OFF"
         cmake.definitions["protobuf_WITH_ZLIB"] = "ON"
         cmake.definitions["protobuf_BUILD_PROTOC_BINARIES"] = "ON" if self.options.build_codegen else "OFF"
         cmake.definitions["protobuf_BUILD_PROTOBUF_LITE"] = "OFF"
-
+        
         if self.settings.compiler == "Visual Studio":
             cmake.definitions["protobuf_MSVC_STATIC_RUNTIME"] = "MT" in self.settings.compiler.runtime
             cmake.definitions["gRPC_MSVC_STATIC_RUNTIME"] = "MT" in self.settings.compiler.runtime
