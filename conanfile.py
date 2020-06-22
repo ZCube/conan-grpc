@@ -60,6 +60,7 @@ class grpcConan(ConanFile):
             '''set_source_files_properties(test/build/check_epollexclusive.c PROPERTIES LANGUAGE CXX)
 target_include_directories(check_epollexclusive''')
 
+        tools.replace_in_file(cmake_path, "set(CMAKE_CXX_STANDARD 11)", "")
         tools.replace_in_file(cmake_path, "absl::time", "CONAN_PKG::abseil")
         tools.replace_in_file(cmake_path, "absl::strings", "CONAN_PKG::abseil")
         tools.replace_in_file(cmake_path, "absl::str_format", "CONAN_PKG::abseil")
@@ -76,6 +77,9 @@ target_include_directories(check_epollexclusive''')
 
         tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
             "set(LIB_PREFIX lib)", "set(LIB_PREFIX)")
+
+        tools.replace_in_file("{}/CMakeLists.txt".format(protobuf_cmake_path),
+            "set(CMAKE_CXX_STANDARD 11)", "")
 
         tools.replace_in_file("{}/install.cmake".format(protobuf_cmake_path),
             '''set(CMAKE_INSTALL_CMAKEDIR "cmake" CACHE STRING "${_cmakedir_desc}")''',
