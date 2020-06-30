@@ -164,14 +164,13 @@ endfunction(grpc_generate)
 
     @property
     def _cmake_install_base_path(self):
-        return os.path.join("lib", "cmake", "grpc")
+        return os.path.join("cmake")
     
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
 
         self.copy(pattern="LICENSE", dst="licenses")
-        self.copy('grpc.cmake', dst='cmake')
         self.copy('grpc.cmake', dst=self._cmake_install_base_path)
         self.copy('*', dst='include', src='{}/third_party/googleapis'.format(self._source_subfolder), keep_path=True)
         self.copy('*', dst='include', src='{}/include'.format(self._source_subfolder))
