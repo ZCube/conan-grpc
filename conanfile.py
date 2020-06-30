@@ -162,12 +162,17 @@ endfunction(grpc_generate)
         cmake = self._configure_cmake()
         cmake.build()
 
+    @property
+    def _cmake_install_base_path(self):
+        return os.path.join("lib", "cmake", "grpc")
+    
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
 
         self.copy(pattern="LICENSE", dst="licenses")
         self.copy('grpc.cmake', dst='cmake')
+        self.copy('grpc.cmake', dst=self._cmake_install_base_path)
         self.copy('*', dst='include', src='{}/third_party/googleapis'.format(self._source_subfolder), keep_path=True)
         self.copy('*', dst='include', src='{}/include'.format(self._source_subfolder))
         self.copy('*.cmake', dst='lib', src='{}/lib'.format(self._build_subfolder), keep_path=True)
@@ -208,3 +213,10 @@ endfunction(grpc_generate)
         bindir = os.path.join(self.package_folder, "bin")
         self.output.info("Appending PATH environment variable: {}".format(bindir))
         self.env_info.PATH.append(bindir)
+        
+        self.cpp_info.builddirs = [
+            self._cmake_install_base_path,
+        ]
+        self.cpp_info.build_modules = [
+            os.path.join(self._cmake_install_base_path, "grpc.cmake"),
+        ]
