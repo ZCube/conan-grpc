@@ -213,9 +213,9 @@ endfunction(grpc_generate)
         self.output.info("Appending PATH environment variable: {}".format(bindir))
         self.env_info.PATH.append(bindir)
         
-        self.cpp_info.builddirs = [
-            self._cmake_install_base_path,
-        ]
+        #self.cpp_info.builddirs = [
+        #    self._cmake_install_base_path,
+        #]
         self.cpp_info.build_modules = [
             os.path.join(self._cmake_install_base_path, "grpc.cmake"),
         ]
