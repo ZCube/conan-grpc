@@ -67,7 +67,7 @@ class grpcConan(ConanFile):
     
     def set_version(self):
         url = 'https://api.github.com/repos/grpc/grpc/releases'
-        self.version = latestWithCache(url)
+        self.version = latestWithCache(url)[1:]
 
     def configure(self):
         if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
@@ -75,7 +75,7 @@ class grpcConan(ConanFile):
             
     def source(self):
         git = tools.Git(folder=self._source_subfolder)
-        git.clone("https://github.com/grpc/grpc.git", self.version)
+        git.clone("https://github.com/grpc/grpc.git", "v" + self.version)
         self.run("cd {} && git submodule init && git submodule update third_party/protobuf".format(self._source_subfolder))
         self.run("cd {} && git submodule init && git submodule update third_party/googleapis".format(self._source_subfolder))
 
