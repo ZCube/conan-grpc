@@ -1,6 +1,6 @@
 [![Download](https://api.bintray.com/packages/zcube/conan-public/grpc%3Azcube/images/download.svg) ](https://bintray.com/zcube/conan-public/grpc%3Azcube/_latestVersion)
-[![Build Status Travis](https://travis-ci.org/ZCube/conan-grpc.svg?branch=stable%2F1.29.1)](https://travis-ci.org/zcube/conan-grpc)
-[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/jswwtxibxwtr1k0f/branch/stable/1.29.1?svg=true)](https://ci.appveyor.com/project/zcube/conan-grpc)
+[![Build Status Travis](https://travis-ci.org/ZCube/conan-grpc.svg?branch=stable%2F1.34.0)](https://travis-ci.org/zcube/conan-grpc)
+[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/jswwtxibxwtr1k0f/branch/stable/1.34.0?svg=true)](https://ci.appveyor.com/project/zcube/conan-grpc)
 # conan-grpc
 Conan package for gRPC framework with protobuf.
 
@@ -22,14 +22,14 @@ If you wish to report an issue or make a request for a package, please do so her
 
 ### Basic setup
 
-    $ conan install grpc/1.29.1@zcube/stable
+    $ conan install grpc/1.34.0@zcube/stable
 
 ### Project setup
 
 If you handle multiple dependencies in your project is better to add a *conanfile.txt*
 
     [requires]
-    grpc/1.29.1@zcube/stable
+    grpc/1.34.0@zcube/stable
 
     [generators]
     cmake
@@ -88,7 +88,7 @@ The following command both runs all the steps of the conan file, and publishes t
 ## Using protoc
 
 ```
-conan install grpc/1.29.1@zcube/stable -g virtualrunenv
+conan install grpc/1.34.0@zcube/stable -g virtualrunenv
 activate_run.bat
 protoc
 ```
@@ -99,7 +99,7 @@ protoc
 NOTE: The conan recipe license applies only to the files of this recipe, which can be used to build and package grpc and protobuf.
 It does *not* in any way apply or is related to the actual software being packaged.
 
-[MIT](https://github.com/zcube/conan-zcube/blob/stable/1.29.1/LICENSE.md)
+[MIT](https://github.com/zcube/conan-zcube/blob/stable/master/LICENSE.md)
 
 ## References
 
