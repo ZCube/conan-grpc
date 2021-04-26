@@ -90,16 +90,17 @@ class grpcConan(ConanFile):
 target_include_directories(check_epollexclusive''')
 
         tools.replace_in_file(cmake_path, "set(CMAKE_CXX_STANDARD 11)", "")
-        tools.replace_in_file(cmake_path, "absl::time", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::strings", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::str_format", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::memory", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::optional", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::base", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::status", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::flat_hash_set", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::synchronization", "CONAN_PKG::abseil")
-        tools.replace_in_file(cmake_path, "absl::inlined_vector", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::abseilor", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::time", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::strings", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::str_format", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::memory", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::optional", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::base", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::status", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::flat_hash_set", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::synchronization", "CONAN_PKG::abseil")
+        # tools.replace_in_file(cmake_path, "absl::inlined_vector", "CONAN_PKG::abseil")
         tools.replace_in_file(ssl_cmake_path, "${OPENSSL_LIBRARIES}", "CONAN_PKG::openssl")
         tools.replace_in_file(ssl_cmake_path, "OpenSSL::SSL OpenSSL::Crypto", "CONAN_PKG::openssl")
         tools.replace_in_file(cares_cmake_path, "c-ares::cares", "CONAN_PKG::c-ares")
@@ -154,8 +155,8 @@ endfunction(grpc_generate)
 
         tools.replace_in_file(protobuf_config_cmake_path,
             '''file(RELATIVE_PATH _rel_dir ${DIR} ${_abs_dir})''', '''string(FIND "${_rel_dir}" "../" _is_in_parent_folder)''')
-        tools.replace_in_file(protobuf_config_cmake_path,
-            '''if(NOT "${_rel_dir}" MATCHES "^\.\.[/\\\\].*")''', '''if (NOT ${_is_in_parent_folder} EQUAL 0)''')
+        # tools.replace_in_file(protobuf_config_cmake_path,
+        #     '''if(NOT "${_rel_dir}" MATCHES "^\.\.[/\\\\].*")''', '''if (NOT ${_is_in_parent_folder} EQUAL 0)''')
             
     def _configure_cmake(self):
         cmake = CMake(self)
